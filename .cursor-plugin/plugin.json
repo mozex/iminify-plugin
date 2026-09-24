@@ -1,8 +1,8 @@
 {
   "name": "iminify",
   "displayName": "Iminify",
-  "description": "Compress, convert and resize images, and scan web pages for every image they load, with Iminify. Includes a skill that optimizes the images in your project and writes the smaller files back.",
-  "version": "1.0.1",
+  "description": "Compress, convert and resize images, and scan web pages for every image they load, with Iminify. Includes a skill that optimizes the images in a project or folder and writes the smaller files back.",
+  "version": "1.0.2",
   "author": {
     "name": "Iminify",
     "email": "support@iminify.com",

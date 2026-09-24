@@ -2,9 +2,9 @@
   <img src="assets/logo.svg" alt="Iminify" width="96">
 </p>
 
-# Iminify for Claude Code and Cursor
+# Iminify for Claude Code, Claude Cowork and Cursor
 
-[Iminify](https://www.iminify.com) compresses, converts and resizes images, and scans web pages for every image they load. This plugin connects Claude Code or Cursor to Iminify's MCP server and adds a skill that optimizes the images in your project and writes the smaller files back in place.
+[Iminify](https://www.iminify.com) compresses, converts and resizes images, and scans web pages for every image they load. This plugin connects Claude Code, Claude Cowork or Cursor to Iminify's MCP server and adds a skill that optimizes the images in a project, or any folder of them, and writes the smaller files back in place.
 
 It reads JPG, PNG, WebP, GIF, HEIC and TIFF, and writes JPG, PNG, WebP and AVIF.
 
@@ -41,6 +41,12 @@ You need an Iminify account with a verified email address. [The free plan](https
 ```
 
 Then run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify page that opens.
+
+### Claude Cowork
+
+In the Claude desktop app, open Customize, then Plugins. Under Personal plugins, press +, choose Add marketplace, then Add from a repository, and enter `https://github.com/mozex/iminify-plugin`. Install Iminify from it and sign in the first time Cowork asks.
+
+Then give Cowork a folder and say "optimize the images in this folder". It lists what it found, waits for your yes, and writes the smaller files back. Cowork also uses the connectors on your Claude account, so if you've already added Iminify as a connector, a task can compress images from their web addresses without the plugin.
 
 ### Cursor
 
