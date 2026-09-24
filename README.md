@@ -40,7 +40,7 @@ You need an Iminify account with a verified email address. [The free plan](https
 /plugin install iminify@iminify
 ```
 
-Then run `/mcp`, pick `iminify`, and press Approve on the Iminify page that opens.
+Then run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify page that opens.
 
 ### Cursor
 

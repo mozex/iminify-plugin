@@ -13,7 +13,7 @@ It changes files in the user's project, so it confirms before it starts and neve
 
 The Iminify tools are `get_usage`, `create_upload_link`, `compress_images` and `get_image`. If they're missing, or a call says the server needs authentication, stop and tell the user how to sign in:
 
-- Claude Code: run `/mcp`, pick `iminify`, and press Approve on the Iminify page that opens.
+- Claude Code: run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify page that opens.
 - Cursor: open Cursor Settings, then MCP, and press Connect next to `iminify`.
 
 Signing in needs an Iminify account with a verified email address. The free plan works.
