@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "iminify",
+  "description": "Iminify's plugin for Claude Code: image compression, conversion and resizing, and page image scans.",
+  "owner": {
+    "name": "Iminify",
+    "email": "support@iminify.com"
+  },
+  "plugins": [
+    {
+      "name": "iminify",
+      "displayName": "Iminify",
+      "description": "Compress, convert and resize images, and scan web pages for every image they load, with Iminify. Includes a skill that optimizes the images in your project and writes the smaller files back.",
+      "author": {
+        "name": "Iminify",
+        "email": "support@iminify.com"
+      },
+      "source": "./",
+      "category": "development",
+      "homepage": "https://www.iminify.com/ai-agents"
+    }
+  ]
+}

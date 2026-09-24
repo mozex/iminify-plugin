@@ -1,0 +1,18 @@
+{
+  "name": "iminify",
+  "displayName": "Iminify",
+  "description": "Compress, convert and resize images, and scan web pages for every image they load, with Iminify. Includes a skill that optimizes the images in your project and writes the smaller files back.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Iminify",
+    "email": "support@iminify.com",
+    "url": "https://www.iminify.com"
+  },
+  "homepage": "https://www.iminify.com/ai-agents",
+  "repository": "https://github.com/mozex/iminify-plugin",
+  "license": "MIT",
+  "keywords": ["images", "image-optimization", "image-compression", "webp", "avif", "core-web-vitals", "mcp"],
+  "logo": "assets/logo.svg",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}
