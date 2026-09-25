@@ -48,7 +48,7 @@ Then run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify
 
 ### Claude Cowork
 
-In the Claude desktop app, open Customize, then Plugins. Under Personal plugins, press +, choose Add marketplace, then Add from a repository, and enter `https://github.com/mozex/iminify-plugin`. Install Iminify from it and sign in the first time Cowork asks.
+Iminify is in Claude's plugin directory. In the Claude desktop app, open Customize, then Plugins, search for Iminify under Discover and press Add. Sign in the first time Cowork asks.
 
 Then give Cowork a folder and say "optimize the images in this folder". It lists what it found, waits for your yes, and writes the smaller files back. Cowork also uses the connectors on your Claude account, so with Iminify connected from the directory, a task can compress images from their web addresses even without the plugin.
 
