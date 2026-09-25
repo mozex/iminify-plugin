@@ -35,7 +35,7 @@ You need an Iminify account with a verified email address. [The free plan](https
 
 ### Claude on the web and desktop
 
-No plugin needed: Iminify is in [Claude's connectors directory](https://claude.ai/directory/connectors/iminify). Open Customize, then Connectors, search for Iminify, press Connect and approve it on the Iminify page that opens. Claude and Cowork can then compress, convert and resize any image with a web address. The plugin below adds the skill that works through folders on your computer.
+No plugin needed: Iminify is in [Claude's connectors directory](https://claude.ai/directory/iminify). Open Customize, then Connectors, search for Iminify, press Connect and approve it on the Iminify page that opens. Claude and Cowork can then compress, convert and resize any image with a web address. The plugin below adds the skill that works through folders on your computer.
 
 ### Claude Code
 
