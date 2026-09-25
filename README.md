@@ -33,6 +33,10 @@ The server's tools:
 
 You need an Iminify account with a verified email address. [The free plan](https://www.iminify.com/pricing) works.
 
+### Claude on the web and desktop
+
+No plugin needed: Iminify is in [Claude's connectors directory](https://claude.ai/directory/connectors/iminify). Open Customize, then Connectors, search for Iminify, press Connect and approve it on the Iminify page that opens. Claude and Cowork can then compress, convert and resize any image with a web address. The plugin below adds the skill that works through folders on your computer.
+
 ### Claude Code
 
 ```text
@@ -46,7 +50,7 @@ Then run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify
 
 In the Claude desktop app, open Customize, then Plugins. Under Personal plugins, press +, choose Add marketplace, then Add from a repository, and enter `https://github.com/mozex/iminify-plugin`. Install Iminify from it and sign in the first time Cowork asks.
 
-Then give Cowork a folder and say "optimize the images in this folder". It lists what it found, waits for your yes, and writes the smaller files back. Cowork also uses the connectors on your Claude account, so if you've already added Iminify as a connector, a task can compress images from their web addresses without the plugin.
+Then give Cowork a folder and say "optimize the images in this folder". It lists what it found, waits for your yes, and writes the smaller files back. Cowork also uses the connectors on your Claude account, so with Iminify connected from the directory, a task can compress images from their web addresses even without the plugin.
 
 ### Cursor
 
