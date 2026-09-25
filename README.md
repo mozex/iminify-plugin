@@ -2,9 +2,9 @@
   <img src="assets/logo.svg" alt="Iminify" width="96">
 </p>
 
-# Iminify for Claude Code, Claude Cowork and Cursor
+# Iminify for Claude, Claude Code and Cursor
 
-[Iminify](https://www.iminify.com) compresses, converts and resizes images, and scans web pages for every image they load. This plugin connects Claude Code, Claude Cowork or Cursor to Iminify's MCP server and adds a skill that optimizes the images in a project, or any folder of them, and writes the smaller files back in place.
+[Iminify](https://www.iminify.com) compresses, converts and resizes images, and scans web pages for every image they load. This plugin connects Claude (Chat and Cowork), Claude Code or Cursor to Iminify's MCP server and adds a skill that optimizes the images in a project, or any folder of them, and writes the smaller files back in place.
 
 It reads JPG, PNG, WebP, GIF, HEIC and TIFF, and writes JPG, PNG, WebP and AVIF.
 
@@ -33,9 +33,12 @@ The server's tools:
 
 You need an Iminify account with a verified email address. [The free plan](https://www.iminify.com/pricing) works.
 
-### Claude on the web and desktop
+### Claude: Chat and Cowork
 
-No plugin needed: Iminify is in [Claude's connectors directory](https://claude.ai/directory/iminify). Open Customize, then Connectors, search for Iminify, press Connect and approve it on the Iminify page that opens. Claude and Cowork can then compress, convert and resize any image with a web address. The plugin below adds the skill that works through folders on your computer.
+Iminify is in Claude's directory, and one install covers both Chat and Cowork, on the web, desktop and mobile.
+
+- **The connector:** open Customize, then Connectors, search for Iminify and press Connect, or open [its listing](https://claude.ai/directory/iminify). Approve it on the Iminify page that opens. Claude can then compress, convert and resize any image with a web address, and scan pages.
+- **The plugin, for folders on your computer:** open Customize, then Plugins, search for Iminify under Discover and press Add, and sign in the first time Claude asks. Then, in Cowork on the desktop app, give Claude a folder and say "optimize the images in this folder". It lists what it found, waits for your yes, and writes the smaller files back.
 
 ### Claude Code
 
@@ -45,12 +48,6 @@ No plugin needed: Iminify is in [Claude's connectors directory](https://claude.a
 ```
 
 Then run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify page that opens.
-
-### Claude Cowork
-
-Iminify is in Claude's plugin directory. In the Claude desktop app, open Customize, then Plugins, search for Iminify under Discover and press Add. Sign in the first time Cowork asks.
-
-Then give Cowork a folder and say "optimize the images in this folder". It lists what it found, waits for your yes, and writes the smaller files back. Cowork also uses the connectors on your Claude account, so with Iminify connected from the directory, a task can compress images from their web addresses even without the plugin.
 
 ### Cursor
 
