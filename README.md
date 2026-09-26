@@ -83,7 +83,7 @@ Every image the agent compresses counts against your plan's daily images, the sa
 
 Iminify keeps each upload and its optimized copy in your account until you delete them. Results come back as download links that work for an hour. [Settings > Connected apps](https://www.iminify.com/settings/connected-apps) shows every app you've approved and disconnects any of them. See the [privacy policy](https://www.iminify.com/privacy-policy) and the [terms of service](https://www.iminify.com/terms-of-service).
 
-Questions or problems: support@iminify.com, or open an issue here.
+Questions or problems: email [support@iminify.com](mailto:support@iminify.com), or [open an issue](https://github.com/mozex/iminify-plugin/issues).
 
 ## License
 

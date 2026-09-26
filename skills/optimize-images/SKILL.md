@@ -59,9 +59,7 @@ HEIC and TIFF always come back in another format, because Iminify doesn't write 
 For each file, one at a time:
 
 1. Call `create_upload_link` with the file's name. The answer has an `upload_id`, an `upload_url` and a ready `curl` command.
-2. Send the file straight away, because the link expires within minutes and works once. Use the file's real path in the command:
-   `curl --fail --upload-file 'path/to/hero.png' '<upload_url>'`
-   In Windows PowerShell, type `curl.exe`: plain `curl` there is an alias for `Invoke-WebRequest`, which takes different arguments.
+2. Send the file straight away, because the link expires within minutes and works once: run the answer's `curl` command with the file's real path in place of its name. In Windows PowerShell, type `curl.exe`: plain `curl` there is an alias for `Invoke-WebRequest`, which takes different arguments.
 3. Keep the `upload_id` with the file's path.
 
 An uploaded file keeps for about a day, so upload everything first, then call `compress_images` with `upload_ids` and the settings. One call takes a limited number of images (`compress_images`' own description gives the number, and a call over it is refused whole), so send the rest in further calls. The answer's `images` come back in the order of the `upload_ids` you sent, less the ones turned down, and each has an `id`: keep a map from that `id` to the local path. Anything turned down is in `refused`, with its `source` (the upload id), `code` and `message`. When nothing at all could be queued, the call comes back as an error that carries the same `refused` list. Handle each refusal by its `code`:
@@ -74,7 +72,7 @@ An uploaded file keeps for about a day, so upload everything first, then call `c
 
 Poll `get_image` for each `id`, a few seconds apart, until its `status` is `completed`, `already-optimized`, `failed` or `cancelled`. Deal with each image as soon as it finishes, because download addresses expire after an hour. Ask `get_image` again for a fresh one if an address has expired.
 
-- `completed`, the same format as the file, and `optimized.size` smaller than the file on disk: download `optimized.download_url` to a temporary file in the same folder (`curl --fail --location -o 'path/to/.hero.png.iminify' '<download_url>'`). Check that its size in bytes equals `optimized.size`, then move it over the original. If it doesn't, delete the temporary file, ask `get_image` for a fresh address and download again.
+- `completed`, the same format as the file, and `optimized.size` smaller than the file on disk: save `optimized.download_url` to a temporary file in the same folder, such as `.hero.png.iminify` beside `hero.png`, following redirects and failing on an HTTP error rather than saving the error page. Check that its size in bytes equals `optimized.size`, then move it over the original. If it doesn't, delete the temporary file, ask `get_image` for a fresh address and download again.
 - `completed` in another format: it's a conversion. Follow step 6.
 - `already-optimized`: Iminify couldn't make the image smaller with these settings. Leave the file as it is and say so plainly, with no saving reported.
 - `completed` but not smaller: leave the file as it is.
