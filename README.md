@@ -25,7 +25,7 @@ The server's tools:
 | `list_images` | Your images, newest first, filtered by status, source or scan |
 | `create_zip` | One download link for several finished images, or all of a scan's |
 | `scan_page` | Scan a web page for every image it loads and compress them all |
-| `get_scan` | A scan's progress, its images and what it saved |
+| `get_scan` | A scan's progress, its images, the ones it skipped and why, and what it saved |
 | `rename_image` | Change the name a result downloads under |
 | `share_image` | Give a result a public page to send to someone |
 | `delete_image` | Delete an image and both its files, for good |
