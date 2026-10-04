@@ -46,12 +46,20 @@ Cowork sends and fetches files from a sandbox. If Claude says the sandbox can't 
 
 ### Claude Code
 
+The plugin is in Anthropic's plugin directory. Type this into Claude Code and pick where to install it:
+
+```text
+/plugin install iminify@anthropic-plugin-directory
+```
+
+Then run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify page that opens.
+
+To install it by hand from this repository instead of the directory, type these two commands and sign in the same way:
+
 ```text
 /plugin marketplace add mozex/iminify-plugin
 /plugin install iminify@iminify
 ```
-
-Then run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify page that opens.
 
 Only want the server? Run `claude mcp add --transport http iminify https://www.iminify.com/mcp` in your terminal instead, then sign in from `/mcp`.
 
