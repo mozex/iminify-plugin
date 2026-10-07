@@ -23,7 +23,7 @@ The server's tools:
 | `create_upload_link` | A one-time address to send a local file to |
 | `get_image` | One image's status, sizes, savings and download links |
 | `list_images` | Your images, newest first, filtered by status, source or scan |
-| `create_zip` | One download link for several finished images, or all of a scan's |
+| `create_zip` | One download link for several finished images, or all of a scan's, in the page's folders with a manifest |
 | `scan_page` | Scan a web page for every image it loads and compress them all |
 | `get_scan` | A scan's progress, its images, the ones it skipped and why, and what it saved |
 | `rename_image` | Change the name a result downloads under |
