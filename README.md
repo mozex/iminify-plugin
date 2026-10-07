@@ -26,6 +26,8 @@ The server's tools:
 | `create_zip` | One download link for several finished images, or all of a scan's, in the page's folders with a manifest |
 | `scan_page` | Scan a web page for every image it loads and compress them all |
 | `get_scan` | A scan's progress, its images, the ones it skipped and why, what it saved, and its page report: oversized images, missing dimensions and alt text, lazy loading in the wrong place, the largest contentful paint. The report's image-by-image list comes with `audit_images`, so polling stays small |
+| `share_scan_report` | Give a finished scan's page report a public link to send a client (Pro) |
+| `export_scan_report` | One download link for a page report as a CSV of every image or a PDF to send on (Pro) |
 | `rename_image` | Change the name a result downloads under |
 | `share_image` | Give a result a public page to send to someone |
 | `delete_image` | Delete an image and both its files, for good |
