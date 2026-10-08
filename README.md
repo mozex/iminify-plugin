@@ -19,7 +19,7 @@ The server's tools:
 
 | Tool | What it does |
 |---|---|
-| `compress_images` | Compress, convert or resize images from their addresses, from upload links, or sent inline |
+| `compress_images` | Compress, convert or resize images from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name |
 | `create_upload_link` | A one-time address to send a local file to |
 | `get_image` | One image's status, sizes, savings and download links |
 | `list_images` | Your images, newest first, filtered by status, source or scan |
@@ -29,6 +29,7 @@ The server's tools:
 | `share_scan_report` | Give a finished scan's page report a public link to send a client (Pro) |
 | `export_scan_report` | One download link for a page report as a CSV of every image or a PDF to send on (Pro) |
 | `rename_image` | Change the name a result downloads under |
+| `write_alt_text` | Ask for the AI alt text and suggested file name of a finished image that has none, or of one in another language |
 | `share_image` | Give a result a public page to send to someone |
 | `delete_image` | Delete an image and both its files, for good |
 | `get_usage` | Your plan, its limits and what today has used |
@@ -84,14 +85,15 @@ Any app that speaks MCP over HTTP can use `https://www.iminify.com/mcp`. The [se
 - "Make every photo in `content/` at most 1600 pixels wide."
 - "Scan https://example.com and tell me which images are heaviest."
 - "Compress https://example.com/hero.jpg to AVIF and give me the link."
+- "Write alt text for the images in `src/pages/about.astro` that don't have any."
 
 ## Limits
 
-Every image the agent compresses counts against your plan's daily images, the same count the website and the API use. `get_usage` shows what's left, and the [pricing page](https://www.iminify.com/pricing) has the numbers for each plan. When a limit is reached, the agent passes on Iminify's message and how long to wait.
+Every image the agent compresses counts against your plan's daily images, and every AI alt text against its daily alt texts, the same counts the website and the API use. `get_usage` shows what's left, and the [pricing page](https://www.iminify.com/pricing) has the numbers for each plan. When a limit is reached, the agent passes on Iminify's message and how long to wait.
 
 ## Your data
 
-Iminify keeps each upload and its optimized copy in your account until you delete them. Results come back as download links that work for an hour. [Settings > Connected apps](https://www.iminify.com/settings/connected-apps) shows every app you've approved and disconnects any of them. See the [privacy policy](https://www.iminify.com/privacy-policy) and the [terms of service](https://www.iminify.com/terms-of-service).
+Iminify keeps each upload and its optimized copy in your account until you delete them. Unless the agent turns it off, a small copy of each image goes to Anthropic, whose Claude model writes its alt text and suggested file name; the privacy policy says what Anthropic keeps. Results come back as download links that work for an hour. [Settings > Connected apps](https://www.iminify.com/settings/connected-apps) shows every app you've approved and disconnects any of them. See the [privacy policy](https://www.iminify.com/privacy-policy) and the [terms of service](https://www.iminify.com/terms-of-service).
 
 Questions or problems: email [support@iminify.com](mailto:support@iminify.com), or [open an issue](https://github.com/mozex/iminify-plugin/issues).
 

@@ -1,6 +1,6 @@
 ---
 name: optimize-images
-description: Optimize the images in a project with Iminify and write the smaller files back in place. Compresses by default; converts to WebP, AVIF, JPG or PNG, or resizes, when asked. Use when the user asks to compress, optimize, shrink, convert or resize the images in a project, a folder or a set of files.
+description: Optimize the images in a project with Iminify and write the smaller files back in place. Compresses by default; converts to WebP, AVIF, JPG or PNG, resizes, or writes alt text, when asked. Use when the user asks to compress, optimize, shrink, convert or resize the images in a project, a folder or a set of files, or to give them alt text.
 ---
 
 # Optimize images
@@ -11,7 +11,7 @@ It changes files in the user's project, so it confirms before it starts and neve
 
 ## 0. Check the connection and the allowance
 
-The Iminify tools are `get_usage`, `create_upload_link`, `compress_images` and `get_image`. If they're missing, or a call says the server needs authentication, stop and tell the user how to sign in:
+The Iminify tools are `get_usage`, `create_upload_link`, `compress_images` and `get_image`, plus `write_alt_text` for step 7. If they're missing, or a call says the server needs authentication, stop and tell the user how to sign in:
 
 - Claude Code: run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify page that opens.
 - Cursor: open Cursor Settings, then MCP, and press Connect next to `iminify`.
@@ -22,7 +22,8 @@ Then call `get_usage` and note:
 
 - `usage.images.remaining`: images left today (`null` means the plan has no daily cap);
 - `limits.max_file_size`: the largest file the plan takes, in bytes;
-- `limits.compressions_per_minute`: how many compressions a minute the plan allows.
+- `limits.compressions_per_minute`: how many compressions a minute the plan allows;
+- `usage.alt_texts.remaining`: AI alt texts left today, when the user wants alt text (`null` means no daily cap).
 
 ## 1. Find the images
 
@@ -49,6 +50,12 @@ Send no settings unless the user asked for something. The defaults suit a websit
 | "whatever format is smallest" | `format: "auto"`, and read step 6 first |
 | no wider than N pixels | `width: N`, only for the images wider than N (below) |
 | keep camera data, dates or location | `keep_metadata: true` |
+| alt text, image descriptions, accessibility | nothing extra (alt text is on by default), `alt_text_language` for another language, and read step 7 |
+| only alt text, nothing else | as above, and skip steps 5 and 6: every file stays exactly as it is |
+
+When the user asked only for alt text, the images still go through `compress_images` (the alt text is written from them, and each counts as one of the day's images), but nothing is written back: skip steps 5 and 6, and report the alt texts instead of savings.
+
+Unless the user asked for alt text, send `alt_text: false`. Iminify writes an AI alt text for every image by default, from a small copy it sends to Anthropic, and each one counts against the day's AI alt texts. This procedure writes files back and uses no alt text, so there is no reason to send the copies or spend the allowance.
 
 A `width` or `height` is exact: Iminify enlarges an image that is smaller than it. For "no wider than 1600", read each image's width first and send `width` only in a call for the wider images. The rest go in a call without it. To read a width: `file` prints it for PNG and JPEG, as do ImageMagick's `identify` and, on macOS, `sips -g pixelWidth`. In Windows PowerShell, for JPG, PNG, GIF and TIFF (not WebP or HEIC): `Add-Type -AssemblyName System.Drawing; ([System.Drawing.Image]::FromFile((Resolve-Path 'path\to\hero.png'))).Width`. When a file's width can't be read, don't resize it: leave `width` out for it and say so in the report. Settings apply to every image in a call, so images that need different settings go in separate calls.
 
@@ -89,7 +96,19 @@ A PNG converted to WebP becomes `hero.webp`, and everything that loads `hero.png
 
 When a file's name appears nowhere in the project, the site may build its path at runtime or load it from a CMS. List those files for the user rather than guessing, and never delete their originals.
 
-## 7. Report
+## 7. Alt text, when asked
+
+Each image's alt text arrives a few seconds after the image is `completed` or `already-optimized`. Keep polling those images with `get_image` until `alt_text.status` is no longer `pending`. A `failed` or `cancelled` image's alt text stays `pending` until the image is retried, so don't wait on it.
+
+- `written`: `alt_text.text` is one sentence for the image's `alt` attribute, and `alt_text.suggested_name` a descriptive file name without an extension.
+- `failed`: call `write_alt_text` with the image's `id` once, then poll again.
+- `skipped`: the day's AI alt texts were used up when the image was queued. Say so, and say `write_alt_text` can ask again tomorrow.
+
+Then find where the project shows each image: `<img>` tags, Markdown images, components that take an `alt` prop. Show the user the alt text you'd put on each one whose alt is missing or empty, and change only what they approve. Never replace an alt text someone wrote, and leave out an image that is purely decorative (`alt=""` on purpose), unless the user says otherwise. The text is written by AI, so tell the user to read it before they publish it.
+
+A suggested name changes the file's name, so treat it like a conversion (step 6): rename only when the user asks, and update every reference.
+
+## 8. Report
 
 Finish with a table: each file, its size before and after, and what it saved in bytes and percent, then a line for the total. Under it, list the files left alone and why: already optimized, too large, refused, failed, or skipped at the user's request. Call `get_usage` again and say how many images today's allowance has left.
 
