@@ -61,19 +61,28 @@ A `width` or `height` is exact: Iminify enlarges an image that is smaller than i
 
 HEIC and TIFF always come back in another format, because Iminify doesn't write either. Treat them as conversions (step 6).
 
-## 4. Upload, then compress
+## 4. Upload and compress, one batch at a time
 
-For each file, one at a time:
+One `compress_images` call takes a limited number of images (its own description gives the number, and a call over it is refused whole). Split the files into batches of at most that many, and finish each batch before you start the next:
 
-1. Call `create_upload_link` with the file's name. The answer has an `upload_id`, an `upload_url` and a ready `curl` command.
-2. Send the file straight away, because the link expires within minutes and works once: run the answer's `curl` command with the file's real path in place of its name. In Windows PowerShell, type `curl.exe`: plain `curl` there is an alias for `Invoke-WebRequest`, which takes different arguments.
-3. Keep the `upload_id` with the file's path.
+1. For each file in the batch, one at a time:
+   1. Call `create_upload_link` with the file's name. The answer has an `upload_id`, an `upload_url` and a ready `curl` command.
+   2. Send the file straight away, because the link expires within minutes and works once: run the answer's `curl` command with the file's real path in place of its name. In Windows PowerShell, type `curl.exe`: plain `curl` there is an alias for `Invoke-WebRequest`, which takes different arguments.
+   3. Keep the `upload_id` with the file's path.
+2. Call `compress_images` with the batch's `upload_ids` and the settings.
 
-An uploaded file keeps for about a day, so upload everything first, then call `compress_images` with `upload_ids` and the settings. One call takes a limited number of images (`compress_images`' own description gives the number, and a call over it is refused whole), so send the rest in further calls. The answer's `images` come back in the order of the `upload_ids` you sent, less the ones turned down, and each has an `id`: keep a map from that `id` to the local path. Anything turned down is in `refused`, with its `source` (the upload id), `code` and `message`. When nothing at all could be queued, the call comes back as an error that carries the same `refused` list. Handle each refusal by its `code`:
+Iminify counts every file sent but not yet compressed, and stops handing out upload links once that count reaches the images the plan can still compress today (a fixed number on a plan with no daily cap). Compressing each batch before uploading the next keeps the count low. When `create_upload_link` is refused, handle it by its `code`:
+
+- `uploads_waiting`: files already sent are still waiting, and the message names their upload ids. Call `compress_images` with those ids, then ask for the link again. An id you didn't keep, left over from an earlier run that stopped, still gets compressed so it stops counting, but don't write its result over any file.
+- `daily_limit_reached`: stop. Report what's done, what's left, and the message as it came.
+
+The answer from `compress_images` lists its `images` in the order of the `upload_ids` you sent, less the ones turned down, and each has an `id`: keep a map from that `id` to the local path. Anything turned down is in `refused`, with its `source` (the upload id), `code` and `message`. When nothing at all could be queued, the call comes back as an error that carries the same `refused` list. Handle each refusal by its `code`:
 
 - `rate_limited`: the minute's allowance is spent. Wait `retry_after` seconds and send those upload ids again. An upload refused this way can still be used.
 - `daily_limit_reached`: stop. Report what's done, what's left, and the message as it came.
 - anything else: leave that file alone and give the reason in the report.
+
+An uploaded file keeps for about a day, so a batch interrupted between its uploads and its `compress_images` call can still be finished with the ids you kept.
 
 ## 5. Wait, then write the results back
 
