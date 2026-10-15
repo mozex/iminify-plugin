@@ -59,6 +59,8 @@ Unless the user asked for alt text, send `alt_text: false`. Iminify writes an AI
 
 A `width` or `height` is exact: Iminify enlarges an image that is smaller than it. For "no wider than 1600", read each image's width first and send `width` only in a call for the wider images. The rest go in a call without it. To read a width: `file` prints it for PNG and JPEG, as do ImageMagick's `identify` and, on macOS, `sips -g pixelWidth`. In Windows PowerShell, for JPG, PNG, GIF and TIFF (not WebP or HEIC): `Add-Type -AssemblyName System.Drawing; ([System.Drawing.Image]::FromFile((Resolve-Path 'path\to\hero.png'))).Width`. When a file's width can't be read, don't resize it: leave `width` out for it and say so in the report. Settings apply to every image in a call, so images that need different settings go in separate calls.
 
+An animated WebP or PNG can't be resized: Iminify refuses the resize with `animation_not_resizable`, because only its first frame would come back (step 4 says what to do then). An animated GIF can be resized, frame by frame. Sent without a resize and without a format change, an animated WebP or PNG comes back with every frame, only its metadata taken off (kept with `keep_metadata: true`).
+
 HEIC and TIFF always come back in another format, because Iminify doesn't write either. Treat them as conversions (step 6).
 
 ## 4. Upload and compress, one batch at a time
@@ -80,6 +82,7 @@ The answer from `compress_images` lists its `images` in the order of the `upload
 
 - `rate_limited`: the minute's allowance is spent. Wait `retry_after` seconds and send those upload ids again. An upload refused this way can still be used.
 - `daily_limit_reached`: stop. Report what's done, what's left, and the message as it came.
+- `animation_not_resizable`: the file is an animated WebP or PNG and the call asked for a resize. The upload is kept: send the same upload id again in a call with no `width`, `height`, `scale` or `format`, and every frame stays. Say in the report that it wasn't resized.
 - anything else: leave that file alone and give the reason in the report.
 
 An uploaded file keeps for about a day, so a batch interrupted between its uploads and its `compress_images` call can still be finished with the ids you kept.
@@ -104,6 +107,8 @@ A PNG converted to WebP becomes `hero.webp`, and everything that loads `hero.png
 4. Save each result next to its original under the new extension, checking its size against `optimized.size` as in step 5, then update the references.
 
 When a file's name appears nowhere in the project, the site may build its path at runtime or load it from a CMS. List those files for the user rather than guessing, and never delete their originals.
+
+A conversion keeps one frame of an animation unless it is an animated GIF converted to WebP: an animated WebP or PNG converted to any format, or a GIF converted to PNG, JPG or AVIF, comes back as a still of its first frame. Tell the user before converting one.
 
 ## 7. Alt text, when asked
 
