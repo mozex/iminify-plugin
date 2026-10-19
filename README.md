@@ -22,10 +22,10 @@ The server's tools:
 | `compress_images` | Compress, convert or resize images from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name |
 | `create_upload_link` | A one-time address to send a local file to |
 | `get_image` | One image's status, sizes, savings and download links |
-| `list_images` | Your images, newest first, filtered by status, source or scan |
+| `list_images` | Your images, newest first, a page at a time, filtered by status, source or scan. This is where a scan's images come from |
 | `create_zip` | One download link for several finished images, or all of a scan's, in the page's folders with a manifest |
 | `scan_page` | Scan a web page for every image it loads and compress them all, with an AI alt text for each one the page shows without any |
-| `get_scan` | A scan's progress, its images, the ones it skipped and why, what it saved, and its page report: oversized images, missing dimensions and alt text, lazy loading in the wrong place, the largest contentful paint. The report's image-by-image list comes with `audit_images`, so polling stays small |
+| `get_scan` | A scan's progress, how many images it found and how many are still compressing, the ones it skipped and why, what it saved, and its page report: oversized images, missing dimensions and alt text, lazy loading in the wrong place, the largest contentful paint. It leaves the images themselves to `list_images` and the report's image-by-image list to `audit_images`, so an answer stays small however many images the page has |
 | `share_scan_report` | Give a finished scan's page report a public link to send a client (Pro) |
 | `export_scan_report` | One download link for a page report as a CSV of every image or a PDF to send on (Pro) |
 | `rename_image` | Change the name a result downloads under |
