@@ -1,6 +1,6 @@
 ---
 name: optimize-images
-description: Optimize the images in a project with Iminify and write the smaller files back in place. Compresses by default; converts to WebP, AVIF, JPG or PNG, resizes, or writes alt text, when asked. Use when the user asks to compress, optimize, shrink, convert or resize the images in a project, a folder or a set of files, or to give them alt text.
+description: Optimize the images in a project with Iminify and write the smaller files back in place. Compresses by default; converts to WebP, AVIF, JPG or PNG, resizes, or adds alt text along the way, when asked. Use when the user asks to compress, optimize, shrink, convert or resize the images in a project, a folder or a set of files. Not for alt text or file names alone (the image-seo skill) or for how a page loads its images (the fix-core-web-vitals skill).
 ---
 
 # Optimize images
@@ -51,9 +51,7 @@ Send no settings unless the user asked for something. The defaults suit a websit
 | no wider than N pixels | `width: N`, only for the images wider than N (below) |
 | keep camera data, dates or location | `keep_metadata: true` |
 | alt text, image descriptions, accessibility | nothing extra (alt text is on by default), `alt_text_language` for another language, and read step 7 |
-| only alt text, nothing else | as above, and skip steps 5 and 6: every file stays exactly as it is |
-
-When the user asked only for alt text, the images still go through `compress_images` (the alt text is written from them, and each counts as one of the day's images), but nothing is written back: skip steps 5 and 6, and report the alt texts instead of savings.
+| only alt text or file names, nothing else | stop here and use the `image-seo` skill instead |
 
 Unless the user asked for alt text, send `alt_text: false`. Iminify writes an AI alt text for every image by default, from a small copy it sends to Anthropic, and each one counts against the day's AI alt texts. This procedure writes files back and uses no alt text, so there is no reason to send the copies or spend the allowance.
 
@@ -112,15 +110,7 @@ A conversion keeps one frame of an animation unless it is an animated GIF conver
 
 ## 7. Alt text, when asked
 
-Each image's alt text arrives a few seconds after the image is `completed` or `already-optimized`. Keep polling those images with `get_image` until `alt_text.status` is no longer `pending`. A `failed` or `cancelled` image's alt text stays `pending` until the image is retried, so don't wait on it.
-
-- `written`: `alt_text.text` is one sentence for the image's `alt` attribute, and `alt_text.suggested_name` a descriptive file name without an extension.
-- `failed`: call `write_alt_text` with the image's `id` once, then poll again.
-- `skipped`: the day's AI alt texts were used up when the image was queued. Say so, and say `write_alt_text` can ask again tomorrow.
-
-Then find where the project shows each image: `<img>` tags, Markdown images, components that take an `alt` prop. Show the user the alt text you'd put on each one whose alt is missing or empty, and change only what they approve. Never replace an alt text someone wrote, and leave out an image that is purely decorative (`alt=""` on purpose), unless the user says otherwise. The text is written by AI, so tell the user to read it before they publish it.
-
-A suggested name changes the file's name, so treat it like a conversion (step 6): rename only when the user asks, and update every reference.
+The images already carry their alt text, so don't send them again. Follow the `image-seo` skill in this plugin (load it if it isn't loaded): its step 1 to find and sort the places that show these files, then from its step 3 on with these images' ids. It waits for the alt text, puts it in the markup with the user's approval, and renames files only when asked.
 
 ## 8. Report
 
