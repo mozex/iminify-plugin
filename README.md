@@ -80,6 +80,8 @@ Cursor shows a Connect button next to `iminify` in its MCP settings. Press it to
 
 Any app that speaks MCP over HTTP can use `https://www.iminify.com/mcp`. The [setup guide](https://www.iminify.com/docs/mcp) covers Claude, ChatGPT, VS Code and connecting with an API key.
 
+To compress the images every pull request adds without an agent in the loop, use the [Iminify GitHub Action](https://github.com/mozex/iminify-action) instead: it commits the smaller files to the pull request's branch and comments with the savings.
+
 ## Things to ask
 
 - "Optimize the images in `public/images`."
