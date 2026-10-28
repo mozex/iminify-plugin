@@ -21,11 +21,11 @@ The server's tools:
 
 | Tool | What it does |
 |---|---|
-| `compress_images` | Compress, convert or resize images, or fit them under a file size, from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name |
+| `compress_images` | Compress, convert or resize images, or fit them under a file size, from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name; on Pro, into a folder of your choosing |
 | `create_upload_link` | A one-time address to send a local file to |
 | `get_image` | One image's status, sizes, savings and download links |
 | `list_images` | Your images, newest first, a page at a time, filtered by status, source or scan. This is where a scan's images come from |
-| `create_zip` | One download link for several finished images, or all of a scan's, in the page's folders with a manifest |
+| `create_zip` | One download link for several finished images, each in the folder it was sent with, or all of a scan's, in the page's folders with a manifest |
 | `scan_page` | Scan a web page for every image it loads and compress them all, with an AI alt text for each one the page shows without any |
 | `get_scan` | A scan's progress, how many images it found and how many are still compressing, the ones it skipped and why, what it saved, and its page report: oversized images, missing dimensions and alt text, lazy loading in the wrong place, the largest contentful paint. It leaves the images themselves to `list_images` and the report's image-by-image list to `audit_images`, so an answer stays small however many images the page has |
 | `share_scan_report` | Give a finished scan's page report a public link to send a client (Pro) |
