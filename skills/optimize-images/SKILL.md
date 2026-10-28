@@ -1,6 +1,6 @@
 ---
 name: optimize-images
-description: Optimize the images in a project with Iminify and write the smaller files back in place. Compresses by default; converts to WebP, AVIF, JPG or PNG, resizes, or adds alt text along the way, when asked. Use when the user asks to compress, optimize, shrink, convert or resize the images in a project, a folder or a set of files. Not for alt text or file names alone (the image-seo skill) or for how a page loads its images (the fix-core-web-vitals skill).
+description: Optimize the images in a project with Iminify and write the smaller files back in place. Compresses by default; converts to WebP, AVIF, JPG or PNG, resizes, fits each file under a size in KB, or adds alt text along the way, when asked. Use when the user asks to compress, optimize, shrink, convert or resize the images in a project, a folder or a set of files, or to get them under a file size. Not for alt text or file names alone (the image-seo skill) or for how a page loads its images (the fix-core-web-vitals skill).
 ---
 
 # Optimize images
@@ -49,6 +49,7 @@ Send no settings unless the user asked for something. The defaults suit a websit
 | WebP, AVIF, JPG or PNG | `format: "webp"` (or `"avif"`, `"jpg"`, `"png"`), and read step 6 first |
 | "whatever format is smallest" | `format: "auto"`, and read step 6 first |
 | no wider than N pixels | `width: N`, only for the images wider than N (below) |
+| under N KB each, for a form or a page with a file size limit | `size_limit: N`, and read the size limit paragraph below |
 | keep camera data, dates or location | `keep_metadata: true` |
 | alt text, image descriptions, accessibility | nothing extra (alt text is on by default), `alt_text_language` for another language, and read step 7 |
 | only alt text or file names, nothing else | stop here and use the `image-seo` skill instead |
@@ -56,6 +57,8 @@ Send no settings unless the user asked for something. The defaults suit a websit
 Unless the user asked for alt text, send `alt_text: false`. Iminify writes an AI alt text for every image by default, from a small copy it sends to Anthropic, and each one counts against the day's AI alt texts. This procedure writes files back and uses no alt text, so there is no reason to send the copies or spend the allowance.
 
 A `width` or `height` is exact: Iminify enlarges an image that is smaller than it. For "no wider than 1600", read each image's width first and send `width` only in a call for the wider images. The rest go in a call without it. To read a width: `file` prints it for PNG and JPEG, as do ImageMagick's `identify` and, on macOS, `sips -g pixelWidth`. In Windows PowerShell, for JPG, PNG, GIF and TIFF (not WebP or HEIC): `Add-Type -AssemblyName System.Drawing; ([System.Drawing.Image]::FromFile((Resolve-Path 'path\to\hero.png'))).Width`. When a file's width can't be read, don't resize it: leave `width` out for it and say so in the report. Settings apply to every image in a call, so images that need different settings go in separate calls.
+
+A `size_limit` is the most each optimized file may weigh, in KB of 1,000 bytes. Iminify lowers the quality until the file fits, and when even the lowest quality is over, makes the image smaller in pixels until it fits. The limit comes before the level: with `level: "lossless"`, a file over the limit is encoded again with loss, so tell the user when they asked for both. Two things can change beyond the bytes, so say both when you show the list in step 1: a PNG or GIF over the limit comes back as JPG, WebP or AVIF, which is a conversion (ask whether to convert those and follow step 6, or leave them out of the call), and a photo can come back smaller in pixels. `format: "png"` with a limit is refused, and an animation is never fitted. Each finished image's `size_limit_status` says how it came out: `under`, `resized` (made smaller in pixels to fit) or `over` (it couldn't get under).
 
 An animated WebP or PNG can't be resized: Iminify refuses the resize with `animation_not_resizable`, because only its first frame would come back (step 4 says what to do then). An animated GIF can be resized, frame by frame. Sent without a resize and without a format change, an animated WebP or PNG comes back with every frame, only its metadata taken off (kept with `keep_metadata: true`).
 
@@ -91,6 +94,7 @@ Poll `get_image` for each `id`, a few seconds apart, until its `status` is `comp
 
 - `completed`, the same format as the file, and `optimized.size` smaller than the file on disk: save `optimized.download_url` to a temporary file in the same folder, such as `.hero.png.iminify` beside `hero.png`, following redirects and failing on an HTTP error rather than saving the error page. Check that its size in bytes equals `optimized.size`, then move it over the original. If it doesn't, delete the temporary file, ask `get_image` for a fresh address and download again.
 - `completed` in another format: it's a conversion. Follow step 6.
+- With a `size_limit`, read `size_limit_status` too. `resized`: `optimized.width` and `optimized.height` are smaller than the file's own; write it back the way its format's bullet says (the first bullet, or step 6 for a conversion), and name it in the report with its new size. `over`: it couldn't get under the limit; write it back only when it is still smaller than the file on disk, and say in the report that it missed, with its size.
 - `already-optimized`: Iminify couldn't make the image smaller with these settings. Leave the file as it is and say so plainly, with no saving reported.
 - `completed` but not smaller: leave the file as it is.
 - `failed` or `cancelled`: leave the file as it is, and pass on the `hint` if there is one.
@@ -114,6 +118,6 @@ The images already carry their alt text, so don't send them again. Follow the `i
 
 ## 8. Report
 
-Finish with a table: each file, its size before and after, and what it saved in bytes and percent, then a line for the total. Under it, list the files left alone and why: already optimized, too large, refused, failed, or skipped at the user's request. Call `get_usage` again and say how many images today's allowance has left.
+Finish with a table: each file, its size before and after, and what it saved in bytes and percent, then a line for the total. Under it, list the files left alone and why: already optimized, too large, refused, failed, or skipped at the user's request. With a size limit, also list the files made smaller in pixels to fit, with their new sizes, and the ones that came out over it. Call `get_usage` again and say how many images today's allowance has left.
 
 Leave committing to the user. The uploads and their results also stay in the user's Iminify account, where the website lists them. Only delete them (`delete_image`, which can't be undone) when the user asks.

@@ -4,7 +4,7 @@
 
 # Iminify for Claude, Claude Code and Cursor
 
-[Iminify](https://www.iminify.com) compresses, converts and resizes images, and scans web pages for every image they load. This plugin connects Claude (Chat and Cowork), Claude Code or Cursor to Iminify's MCP server and adds three skills: one optimizes the images in a project, or any folder of them, and writes the smaller files back in place; one gives them alt text and descriptive file names; and one fixes the images that slow a page's Core Web Vitals.
+[Iminify](https://www.iminify.com) compresses, converts and resizes images, fits them under a file size, and scans web pages for every image they load. This plugin connects Claude (Chat and Cowork), Claude Code or Cursor to Iminify's MCP server and adds three skills: one optimizes the images in a project, or any folder of them, and writes the smaller files back in place; one gives them alt text and descriptive file names; and one fixes the images that slow a page's Core Web Vitals.
 
 You don't need the plugin to use Iminify. The server alone gives your agent every tool below, local files included. What the plugin adds is the skills: each job written down, so it goes the same careful way every time.
 
@@ -21,7 +21,7 @@ The server's tools:
 
 | Tool | What it does |
 |---|---|
-| `compress_images` | Compress, convert or resize images from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name |
+| `compress_images` | Compress, convert or resize images, or fit them under a file size, from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name |
 | `create_upload_link` | A one-time address to send a local file to |
 | `get_image` | One image's status, sizes, savings and download links |
 | `list_images` | Your images, newest first, a page at a time, filtered by status, source or scan. This is where a scan's images come from |
@@ -87,6 +87,7 @@ To compress the images every pull request adds without an agent in the loop, use
 - "Optimize the images in `public/images`."
 - "Convert the PNGs in `resources/img` to WebP and update the references."
 - "Make every photo in `content/` at most 1600 pixels wide."
+- "Get the photos in `uploads/` under 200 KB each."
 - "Scan https://example.com and tell me which images are heaviest."
 - "Compress https://example.com/hero.jpg to AVIF and give me the link."
 - "Write alt text for the images in `src/pages/about.astro` that don't have any."
