@@ -15,16 +15,16 @@ It reads JPG, PNG, WebP, GIF, HEIC and TIFF, and writes JPG, PNG, WebP and AVIF.
 - **The `iminify` MCP server** at `https://www.iminify.com/mcp`. It signs in with OAuth, so there's no key to paste.
 - **The `optimize-images` skill.** It finds the images in a project, uploads them, compresses them and puts the results back. It shows you the list and waits for a yes before it starts. It won't overwrite a file git can't restore, and it only renames files, updating their references, when you ask for a new format.
 - **The `image-seo` skill.** It finds the images your pages show without alt text, has Iminify's AI write it in the page's language, and puts it in the `alt` attributes you approve. It leaves alt text a person wrote alone, and `alt=""` too. Ask for file names as well and it renames `IMG_4032.jpg` to something like `golden-retriever-on-a-beach.jpg`, updating every reference. Given a page's address instead, it scans the page and suggests alt text for each image shown without any.
-- **The `fix-core-web-vitals` skill.** It scans a published page, reads the report on its images, and finds each one in your project. Then it fixes what slows the page down: `fetchpriority="high"` on the largest contentful paint, no lazy loading in the first screen, files resized to twice the space they fill (or a `sizes` attribute when the tag has a `srcset`), `width` and `height` on every image so nothing jumps, and lazy loading below the first screen. It shows you the plan before it changes anything.
+- **The `fix-core-web-vitals` skill.** It scans a published page, reads the report on its images, and finds each one in your project. Then it fixes what slows the page down: `fetchpriority="high"` on the largest contentful paint, no lazy loading in the first screen, files resized to twice the space they fill (or a `sizes` attribute when the tag has a `srcset`, or on Pro a set of responsive sizes with a `srcset` of its own), `width` and `height` on every image so nothing jumps, and lazy loading below the first screen. It shows you the plan before it changes anything.
 
 The server's tools:
 
 | Tool | What it does |
 |---|---|
-| `compress_images` | Compress, convert or resize images, or fit them under a file size, from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name; on Pro, into a folder of your choosing |
+| `compress_images` | Compress, convert or resize images, or fit them under a file size, from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name; on Pro, into a folder of your choosing, and at several widths for an `<img srcset>` |
 | `create_upload_link` | A one-time address to send a local file to |
-| `get_image` | One image's status, sizes, savings and download links |
-| `list_images` | Your images, newest first, a page at a time, filtered by status, source or scan. This is where a scan's images come from |
+| `get_image` | One image's status, sizes, savings and download links, its responsive sizes' links and their `<img srcset>` included |
+| `list_images` | Your images, newest first, a page at a time, filtered by status, source or scan. This is where a scan's images come from. Responsive sizes show only their status here, so a page stays small |
 | `create_zip` | One download link for several finished images, each in the folder it was sent with, or all of a scan's, in the page's folders with a manifest |
 | `scan_page` | Scan a web page for every image it loads and compress them all, with an AI alt text for each one the page shows without any |
 | `get_scan` | A scan's progress, how many images it found and how many are still compressing, the ones it skipped and why, what it saved, and its page report: oversized images, missing dimensions and alt text, lazy loading in the wrong place, the largest contentful paint. It leaves the images themselves to `list_images` and the report's image-by-image list to `audit_images`, so an answer stays small however many images the page has |
@@ -33,7 +33,7 @@ The server's tools:
 | `rename_image` | Change the name a result downloads under |
 | `write_alt_text` | Ask for the AI alt text and suggested file name of a finished image that has none, or of one in another language |
 | `share_image` | Give a result a public page to send to someone |
-| `delete_image` | Delete an image and both its files, for good |
+| `delete_image` | Delete an image and its files, for good |
 | `get_usage` | Your plan, its limits and what today has used |
 
 ## Install
@@ -93,6 +93,7 @@ To compress the images every pull request adds without an agent in the loop, use
 - "Write alt text for the images in `src/pages/about.astro` that don't have any."
 - "Give the photos in `content/blog` descriptive file names."
 - "PageSpeed says images slow down https://example.com. Fix them."
+- "Give the hero image on the home page a srcset for phones and desktops." (Pro)
 
 ## Limits
 
