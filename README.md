@@ -23,7 +23,7 @@ The server's tools:
 |---|---|
 | `compress_images` | Compress, convert or resize images, or fit them under a file size, from their addresses, from upload links, or sent inline, each with an AI alt text and a suggested file name; on Pro, into a folder of your choosing, and at several widths for an `<img srcset>` |
 | `create_upload_link` | A one-time address to send a local file to |
-| `get_image` | One image's status, sizes, savings and download links, its responsive sizes' links and their `<img srcset>` included |
+| `get_image` | One image's status, sizes, savings and download links, its responsive sizes' links and their `<img srcset>` included, and whether it lost the Content Credentials its file carried |
 | `list_images` | Your images, newest first, a page at a time, filtered by status, source or scan. This is where a scan's images come from. Responsive sizes show only their status here, so a page stays small |
 | `create_zip` | One download link for several finished images, each in the folder it was sent with, or all of a scan's, in the page's folders with a manifest |
 | `scan_page` | Scan a web page for every image it loads and compress them all, with an AI alt text for each one the page shows without any |
