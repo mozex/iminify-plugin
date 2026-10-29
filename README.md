@@ -29,6 +29,9 @@ The server's tools:
 | `scan_page` | Scan a web page for every image it loads and compress them all, with an AI alt text for each one the page shows without any |
 | `crawl_site` | Crawl several pages of one site at once, from its sitemap or a list, each scanned like `scan_page` and an image the pages share compressed once (Pro) |
 | `get_crawl` | A site crawl's progress, each page with its status, and once it's done the site's report, an image the pages share counted once |
+| `monitor_site` | Have a crawled site crawled again every week, compressing only the images that are new or changed, with an email when a check finds some (Pro) |
+| `list_monitors` | Your weekly site checks, each with its next run and its newest run |
+| `stop_monitor` | Stop a weekly site check and delete its runs, for good |
 | `get_scan` | A scan's progress, how many images it found and how many are still compressing, the ones it skipped and why, what it saved, and its page report: oversized images, missing dimensions and alt text, lazy loading in the wrong place, the largest contentful paint. It leaves the images themselves to `list_images` and the report's image-by-image list to `audit_images`, so an answer stays small however many images the page has |
 | `share_scan_report` | Give a finished scan's page report a public link to send a client (Pro) |
 | `export_scan_report` | One download link for a page report as a CSV of every image or a PDF to send on (Pro) |

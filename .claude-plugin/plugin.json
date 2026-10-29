@@ -1,7 +1,7 @@
 {
   "name": "iminify",
   "displayName": "Iminify",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "Compress, convert and resize images with AI alt text, and scan web pages for every image they load, with Iminify. Includes skills that optimize a project's images and write the smaller files back, give them alt text and descriptive file names, and fix the images behind a page's Core Web Vitals.",
   "author": {
     "name": "Iminify",
