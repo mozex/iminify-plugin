@@ -43,7 +43,7 @@ The server's tools:
 
 ## Install
 
-You need an Iminify account with a verified email address. [The free plan](https://www.iminify.com/pricing) works.
+You need an Iminify account with a verified email address. [The free plan](https://www.iminify.com/pricing) works, and while Iminify offers one, a new account starts with a free trial of Pro.
 
 ### Claude: Chat and Cowork
 
