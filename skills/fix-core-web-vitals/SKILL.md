@@ -11,7 +11,7 @@ It changes the user's code and files, so it shows the plan and waits for a yes b
 
 ## 0. Check the connection and the allowance
 
-The Iminify tools are `get_usage`, `scan_page` and `get_scan`, plus `create_upload_link`, `compress_images` and `get_image` for resizing files. If they're missing, or a call says the server needs authentication, stop and tell the user how to sign in:
+The Iminify tools are `get_usage`, `scan_page` and `get_scan` (and on Pro `crawl_site` and `get_crawl` for several pages), plus `create_upload_link`, `compress_images` and `get_image` for resizing files. If they're missing, or a call says the server needs authentication, stop and tell the user how to sign in:
 
 - Claude Code: run `/mcp`, pick `plugin:iminify:iminify`, and press Approve on the Iminify page that opens.
 - Cursor: open Cursor Settings, then MCP, and press Connect next to `iminify`.
@@ -21,6 +21,7 @@ Signing in needs an Iminify account with a verified email address. The free plan
 Then call `get_usage` and note:
 
 - `usage.scans.remaining`: page scans left today (`null` means the plan has no daily cap);
+- `usage.crawls.remaining` and `limits.pages_per_crawl`: site crawls left today and how many pages one takes, 0 on a plan without them (Pro has them);
 - `limits.images_per_scan`: how many of a page's images a scan downloads and compresses;
 - `usage.images.remaining`: images left today, which resizing a file spends;
 - `limits.max_file_size`: the largest file the plan takes, in bytes;
@@ -30,7 +31,7 @@ Then call `get_usage` and note:
 
 The scan runs on Iminify's servers, so it needs the page as it's published: the live site or a preview deployment. It can't reach `localhost` or any other address on a private network, and a page behind a login usually comes back with no images. Ask the user for the address when they haven't given one.
 
-Each page is one scan. For several pages, scan the ones the user names, or the home page and one page of each kind (a product page, an article), and say how many of today's scans that uses.
+Each page is one scan. For several pages, take the ones the user names, or the home page and one page of each kind (a product page, an article). On a plan with site crawls left today, crawl them in one go (step 2) and say it uses one of today's crawls; otherwise scan them one by one and say how many of today's scans that uses.
 
 ## 2. Scan the page
 
@@ -42,6 +43,8 @@ Call `scan_page` with the `url`, `format: "auto"` and `alt_text: false`:
 The images a scan finds don't count against the user's daily images, and the compressed copies stay in their account.
 
 Poll `get_scan` a few seconds apart until its `status` is no longer `queued` or `scanning` and `images_in_progress` is 0 (`alt_texts_in_progress` too, when alt text is on). A status of `failed`, `cancelled` or `no-image-found` ends it: report the status, and stop for that page.
+
+For several pages of one site on a plan with site crawls, call `crawl_site` instead, once, with the addresses in `pages` (all on one site, up to `limits.pages_per_crawl`) and the same `format` and `alt_text`. An image the pages share is then compressed once. Poll `get_crawl` until its `status` is `completed` or `failed` and both `pages_in_progress` and `images_in_progress` are 0; a failed crawl's `note` says why. Each entry in its `pages` is a page scan: carry on from step 3 with each page's `id`, and treat a page whose `status` is `failed` or `no-image-found` as above. `audit` on the crawl sums up the site, and `images_to_fix` on each page says where the work is.
 
 ## 3. Read the report
 
@@ -102,7 +105,7 @@ List the changes, most important first: the LCP image (a CSS background one alwa
 
 ## 7. Check it after the release
 
-The fixes reach the page only once the user publishes them. When they have, scan the page again (one more of today's scans) and compare the `findings`, and each fixed image's `bytes`, with the first scan's: a `sizes` change can clear `oversized` while the browser still downloads as much as before. Core Web Vitals scores themselves come from real visitors' browsers over the following weeks (Search Console, PageSpeed Insights' field data), so don't promise a score: say which image problems the page no longer has.
+The fixes reach the page only once the user publishes them. When they have, scan the page again (one more of today's scans, or crawl the pages again) and compare the `findings`, and each fixed image's `bytes`, with the first scan's: a `sizes` change can clear `oversized` while the browser still downloads as much as before. Core Web Vitals scores themselves come from real visitors' browsers over the following weeks (Search Console, PageSpeed Insights' field data), so don't promise a score: say which image problems the page no longer has.
 
 ## 8. Report
 
