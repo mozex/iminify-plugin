@@ -20,10 +20,10 @@ Signing in needs an Iminify account with a verified email address. The free plan
 
 Then call `get_usage` and note:
 
-- `usage.images.remaining`: images left today (`null` means the plan has no daily cap);
+- `usage.images.remaining`: images left today;
 - `limits.max_file_size`: the largest file the plan takes, in bytes;
 - `limits.compressions_per_minute`: how many compressions a minute the plan allows;
-- `usage.alt_texts.remaining`: AI alt texts left today, when the user wants alt text (`null` means no daily cap).
+- `usage.alt_texts.remaining`: AI alt texts left today, when the user wants alt text.
 
 ## 1. Find the images
 
@@ -74,7 +74,7 @@ One `compress_images` call takes a limited number of images (its own description
    3. Keep the `upload_id` with the file's path.
 2. Call `compress_images` with the batch's `upload_ids` and the settings.
 
-Iminify counts every file sent but not yet compressed, and stops handing out upload links once that count reaches the images the plan can still compress today (a fixed number on a plan with no daily cap). Compressing each batch before uploading the next keeps the count low. When `create_upload_link` is refused, handle it by its `code`:
+Iminify counts every file sent but not yet compressed, and stops handing out upload links once that count reaches the images the plan can still compress today, and never more than a fixed number. Compressing each batch before uploading the next keeps the count low. When `create_upload_link` is refused, handle it by its `code`:
 
 - `uploads_waiting`: uploads not yet compressed are holding every place. When the message names upload ids, those files were already sent: send them to `compress_images` in calls of at most the number its description gives, then ask for the link again. An id you didn't keep, left over from an earlier run that stopped, still gets compressed so it stops counting, but don't write its result over any file. When the message names no ids, the places are held by open links whose file never arrived, and they lapse within the minutes it gives: wait that long and ask again, or stop and report.
 - `daily_limit_reached`: stop. Report what's done, what's left, and the message as it came.

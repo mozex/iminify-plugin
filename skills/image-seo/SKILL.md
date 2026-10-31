@@ -20,8 +20,8 @@ Signing in needs an Iminify account with a verified email address. The free plan
 
 Then call `get_usage` and note:
 
-- `usage.alt_texts.remaining`: AI alt texts left today (`null` means the plan has no daily cap);
-- `usage.images.remaining`: images left today, since each local file is sent as an image (`null` means no daily cap);
+- `usage.alt_texts.remaining`: AI alt texts left today;
+- `usage.images.remaining`: images left today, since each local file is sent as an image;
 - `usage.scans.remaining`: page scans left today, when the user named a live page;
 - `limits.max_file_size`: the largest file the plan takes, in bytes.
 
