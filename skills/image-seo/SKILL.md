@@ -21,8 +21,8 @@ Signing in needs an Iminify account with a verified email address. The free plan
 Then call `get_usage` and note:
 
 - `usage.alt_texts.remaining`: AI alt texts left today;
-- `usage.images.remaining`: images left today, since each local file is sent as an image;
-- `usage.scans.remaining`: page scans left today, when the user named a live page;
+- `usage.images.remaining`: images left today, since each local file is sent as an image (`null` on a plan with unlimited images);
+- `usage.scans.remaining`: page scans left today, when the user named a live page (`null` on a plan with unlimited page scans);
 - `limits.max_file_size`: the largest file the plan takes, in bytes.
 
 When the user named a page's address rather than files, go to "A live page" below.
@@ -44,7 +44,7 @@ Iminify reads `.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`, `.heic`, `.heif`, `.tif`
 
 **Choose the language.** Alt text belongs in the page's own language. Read it from `<html lang>`, the site's locale config or the content, and pass `alt_text_language` (a language tag such as `de` or `ja`) when it isn't English. `compress_images` lists the languages it takes; for any other, tell the user rather than writing English into a page in another language.
 
-Show the user what you found before anything is sent: the places that need alt text, the distinct files behind them, the files you'd rename if they asked for names, the language, and what it uses (one of today's images and one AI alt text per file). When step 7 of the `optimize-images` skill sent you here, those files were compressed with their alt text already, so they cost nothing more: say that instead. Wait for a yes. When there are more files than `remaining` allows today (and they weren't sent already), say so and offer to start with the pages that matter most.
+Show the user what you found before anything is sent: the places that need alt text, the distinct files behind them, the files you'd rename if they asked for names, the language, and what it uses (one of today's images and one AI alt text per file). When step 7 of the `optimize-images` skill sent you here, those files were compressed with their alt text already, so they cost nothing more: say that instead. Wait for a yes. When a `remaining` is a number and there are more files than it allows today (and they weren't sent already), say so and offer to start with the pages that matter most.
 
 ## 2. Ask Iminify for the alt text
 

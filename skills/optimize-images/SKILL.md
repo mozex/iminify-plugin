@@ -20,7 +20,7 @@ Signing in needs an Iminify account with a verified email address. The free plan
 
 Then call `get_usage` and note:
 
-- `usage.images.remaining`: images left today;
+- `usage.images.remaining`: images left today, `null` on a plan with unlimited images;
 - `limits.max_file_size`: the largest file the plan takes, in bytes;
 - `limits.compressions_per_minute`: how many compressions a minute the plan allows;
 - `usage.alt_texts.remaining`: AI alt texts left today, when the user wants alt text.
@@ -31,7 +31,7 @@ Work on exactly what the user named: a file, a folder, a pattern. When they said
 
 Iminify reads `.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`, `.heic`, `.heif`, `.tif` and `.tiff`. Leave everything else alone, SVG, ICO and AVIF included. Leave out files larger than `max_file_size` too, and name them in the report.
 
-Show the user what you found before uploading anything: the number of files, their total size, the largest few, and the settings you'll use (step 3). Wait for a yes, unless the user already named the exact files and settings. When there are more files than `remaining` allows today, say so and offer to start with the largest ones.
+Show the user what you found before uploading anything: the number of files, their total size, the largest few, and the settings you'll use (step 3). Wait for a yes, unless the user already named the exact files and settings. When `remaining` is a number and there are more files than it allows today, say so and offer to start with the largest ones.
 
 ## 2. Make sure the originals can come back
 

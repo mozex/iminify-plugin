@@ -20,10 +20,10 @@ Signing in needs an Iminify account with a verified email address. The free plan
 
 Then call `get_usage` and note:
 
-- `usage.scans.remaining`: page scans left today;
+- `usage.scans.remaining`: page scans left today, `null` on a plan with unlimited page scans;
 - `usage.crawls.remaining` and `limits.pages_per_crawl`: site crawls left today and how many pages one takes, 0 on a plan without them (the paid plans and the trial have them);
 - `limits.images_per_scan`: how many of a page's images a scan downloads and compresses;
-- `usage.images.remaining`: images left today, which resizing a file spends;
+- `usage.images.remaining`: images left today (`null` on a plan with unlimited images), which resizing a file spends;
 - `limits.max_file_size`: the largest file the plan takes, in bytes.
 
 ## 1. Get the page's address
