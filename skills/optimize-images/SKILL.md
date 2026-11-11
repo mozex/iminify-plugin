@@ -96,7 +96,7 @@ Poll `get_image` for each `id`, a few seconds apart, until its `status` is `comp
 - `completed` in another format: it's a conversion. Follow step 6.
 - With a `size_limit`, read `size_limit_status` too. `resized`: `optimized.width` and `optimized.height` are smaller than the file's own; write it back the way its format's bullet says (the first bullet, or step 6 for a conversion), and name it in the report with its new size. `over`: it couldn't get under the limit; write it back only when it is still smaller than the file on disk, and say in the report that it missed, with its size.
 - `content_credentials.status` is `removed`: the file carries Content Credentials, a signed record of where it came from (every Gemini image has one), and the optimized copy doesn't, because any change to a file breaks their signature. Write it back as its format's bullet says, and name it in the report: the project's file loses the record once it's written over (git still has the old one, if the project uses it), while the upload Iminify keeps at `original.download_url` still carries it.
-- `already-optimized`: Iminify couldn't make the image smaller with these settings. Leave the file as it is and say so plainly, with no saving reported.
+- `already-optimized`: Iminify handed the file back as it was sent, because it couldn't make it smaller with these settings or because Iminify made this file itself (one an earlier run wrote back, sent again). Leave the file as it is and say so plainly, with no saving reported.
 - `completed` but not smaller: leave the file as it is.
 - `failed` or `cancelled`: leave the file as it is, and pass on the `hint` if there is one.
 
